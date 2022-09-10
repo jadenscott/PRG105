@@ -68,16 +68,18 @@ print("=" * 10, "Section 4.5 sentinel value", "=" * 10)
 # After the loop, display the total, the count, and the average (total / count)
 total = 0
 count = 0
-score = 0
+score = int(input("Enter a test score or enter -1 to end: "))
 
 while score != -1:
-    score = float(input("Enter the test score or enter -1 to end: "))
-    total = total + score
-    count = count + 1
+    total += score
+    count += 1
+    score = int(input("Enter a test score or enter -1 to end: "))
 
-average = total / count
+print(f'The total of the scores you entered is {total}.')
+print(f'You entered {count} scores.')
 
-print(f'The total is {total}\nThe count is {count}\nThe average is {average:2f}')
+if count > 0:
+    print(f'The average of the scores is {total / count}.')
 
 # TODO 4.6 validating data
 print("=" * 10, "Section 4.6 data validation loop", "=" * 10)
