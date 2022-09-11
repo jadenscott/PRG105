@@ -4,20 +4,26 @@ or not"""
 # Variables are declared here, assumes student qualifies for financial aid
 student_qualifies = True
 student_status = input("Are you a new or returning student? (enter n or r): ")
+
+# If the student is new he qualifies for financial aid no matter what.
+if student_status == "n":
+    print("You are eligible for financial aid. Disregard all questions below.")
+
+# The rest of the variables are declared here
 gpa = float(input("What is your current GPA?: "))
 record = input("Have you ever been convicted of a drug felony? (enter y or n): ")
 credit_hours = int(input("How many credit hours are you enrolled for next semester?: "))
 income = int(input("What is your gross annual income rounded to the nearest dollar? (do not use commas): "))
 
 # Tests if the user cannot receive financial aid
-if student_status == "r" and gpa < 3.200:
+if student_status == "r" and gpa < 2.000:
     student_qualifies = False
-    if record == "y":
-        student_qualifies = False
-        if credit_hours < 6:
-            student_qualifies = False
-            if income >= 50000:
-                student_qualifies = False
+if record == "y":
+    student_qualifies = False
+if credit_hours < 6:
+    student_qualifies = False
+if income >= 50000:
+    student_qualifies = False
 
 # Determines whether the user can receive financial aid or not depending on the value of student_qualifies
 if student_qualifies is False:
