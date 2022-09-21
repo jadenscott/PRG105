@@ -172,7 +172,7 @@ def main6():
     # TODO call the bmi function and assign the result to a variable named answer
     answer = bmi(height, weight)
     # TODO print the variable answer, make sure to format it to 1 decimal place
-    print(f'{answer:.1f}')
+    print(f'Your BMI is {answer:.1f}')
     # TODO modify the bmi function (below) to accept the height and weight
     # read the code to determine the parameter names
 
@@ -193,6 +193,4 @@ print("=" * 10, "Section 5.9 use the math module", "=" * 10)
 # Display the result
 number_to_round = 4.243
 
-result = ceil(number_to_round)
-
-print(result)
+print(f'The ceiling value for {number_to_round} is {math.ceil(number_to_round)}.')
