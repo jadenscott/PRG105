@@ -9,32 +9,31 @@ PI = 3.14159265358  # global variable for pi is declared
 def main():
     menu()  # initially, shape options are printed
     user_num = int(input("Please enter the number of your selection: "))
-    validate(user_num)  # to ensure that user_num is an integer between 1 and 5
-    while user_num != 5:  # as long as the user does not quit the program, he will be repeatedly asked to select shapes
-        if user_num == 1:
-            base = int(input("Enter the base of the rectangle in cm: "))
-            height = int(input("Enter the height of the rectangle in cm: "))
-            rectangle(base, height)
-            user_num = int(input("Please enter the number of your selection: "))
-            validate(user_num)
-        if user_num == 2:
-            base = int(input("Enter the base of the triangle in cm: "))
-            height = int(input("Enter the height of the triangle in cm: "))
-            triangle(base, height)
-            user_num = int(input("Please enter the number of your selection: "))
-            validate(user_num)
-        if user_num == 3:
-            length = int(input("Enter the length of one side of the square in cm: "))
-            square(length)
-            user_num = int(input("Please enter the number of your selection: "))
-            validate(user_num)
-        if user_num == 4:
-            radius = int(input("Enter the radius of the circle in cm: "))
-            circle(radius)
-            user_num = int(input("Please enter the number of your selection: "))
-            validate(user_num)
-        if user_num == 5:  # upon quitting, "Goodbye!" will be printed
-            print("Goodbye!")
+    user_num = validate(user_num)  # to ensure that user_num is an integer between 1 and 5
+    if user_num == 1:
+        base = int(input("Enter the base of the rectangle in cm: "))
+        height = int(input("Enter the height of the rectangle in cm: "))
+        rectangle(base, height)
+        user_num = int(input("Please enter the number of your selection: "))
+        user_num = validate(user_num)
+    if user_num == 2:
+        base = int(input("Enter the base of the triangle in cm: "))
+        height = int(input("Enter the height of the triangle in cm: "))
+        triangle(base, height)
+        user_num = int(input("Please enter the number of your selection: "))
+        user_num = validate(user_num)
+    if user_num == 3:
+        length = int(input("Enter the length of one side of the square in cm: "))
+        square(length)
+        user_num = int(input("Please enter the number of your selection: "))
+        user_num = validate(user_num)
+    if user_num == 4:
+        radius = int(input("Enter the radius of the circle in cm: "))
+        circle(radius)
+        user_num = int(input("Please enter the number of your selection: "))
+        user_num = validate(user_num)
+    if user_num == 5:  # upon quitting, "Goodbye!" will be printed
+        print("Goodbye!")
 
 
 def menu():
