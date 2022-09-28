@@ -4,7 +4,6 @@ This program gathers contact information for people.
 
 
 def main():
-
     # gets the amount of people to collect contact information from
     num_people = int(input("How many people do you want to add to the file? "))
 
@@ -21,5 +20,8 @@ def main():
         # writes the contact information to contacts_file
         contacts_file.write(f'{name}, {number}, {email}\n')
 
-        
+    # closes contacts_file
+    contacts_file.close()
+
+
 main()
