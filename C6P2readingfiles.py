@@ -6,7 +6,7 @@ many numbers there are, then, calculate and display the average.
 
 def main():
     # opens 'c6p2numbers.txt' for reading and creates numbers_file variable
-    numbers_file = open('c6p2numbers.txt', 'r')
+    in_file = open('sales_totals.txt', 'r')
 
     # initializes accumulator
     total = 0.0
@@ -17,7 +17,7 @@ def main():
     # initializes average variable
     average = 0.0
 
-    for line in numbers_file:
+    for line in in_file:
         # converts to float and strips new line character
         value = float(line.rstrip('\n'))
 
@@ -32,7 +32,7 @@ def main():
     print('')
 
     # closes file
-    numbers_file.close()
+    in_file.close()
 
     # prints total, number of entries and average
     print(f'Total:{total:20,.2f}')
