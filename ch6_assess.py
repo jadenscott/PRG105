@@ -33,9 +33,8 @@ def main():
                 print(f'{value:,.2f}')
 
                 # prints error message to account for bad data
-            except ValueError as err:
-                print(err)
-                # print(f"Line {count + 1} with a value {infile.readline(count)} was invalid.")
+            except ValueError:
+                print(f"Line {count + 1} with a value {line} was invalid.")
 
         # calculates average
         average = total / count
