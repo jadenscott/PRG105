@@ -33,6 +33,9 @@ def main():
         # adds one to the count
         count += 1
 
+    # closes grades_file
+    grades_file.close()
+    
     # prints students_list to the console
     print(students_list)
 
