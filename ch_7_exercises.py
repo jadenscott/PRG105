@@ -58,7 +58,7 @@ months.append('Nov')
 months.append('Dec')
 
 # 2) Get the index of "May" from the months list and print it on screen
-print(months[4])
+print(months.index('May'))
 
 # 3) Sort list3 from exercise 7.2 and print the results on screen
 list3.sort()
@@ -78,7 +78,7 @@ print(max(list3))
 print("=" * 10, "Section 7.6 copying lists", "=" * 10)
 # Copy the list months to the variable months_of_the_year
 # Print the values in months_of_the_year
-months_of_the_year = months
+months_of_the_year = [] + months
 for month in months_of_the_year:
     print(month)
 
@@ -94,14 +94,15 @@ print(total)
 
 # 2) Get the average of values in list3 and print the results
 average = total / len(list3)
-print(average)
+
+print(f'The average value in list3 is {average:.2f}.')
 
 # 3) Open the file states.txt in read mode,
 # -- read the contents of the file into the list states_list
 # -- print the contents of states_list on screen
 infile = open('states.txt', 'r')
 
-states_list = [infile.read()]
+states_list = infile.readlines()
 
 print(states_list)
 
@@ -125,15 +126,13 @@ days_in_month = [['January', 31], ['February', 28], ['March', 31], ['April', 30]
                  ['July', 31], ['August', 31], ['September', 30], ['October', 31], ['November', 30], ['December', 31]]
 
 # 2) Print the contents of the entire list
-for month in days_in_month:
-    for element in month:
-        print(element)
+print(days_in_month)
 
 # 3) Print just the values for index 3,0 and 3,1
-print(days_in_month[3][0])
-print(days_in_month[3][1])
+print(days_in_month[3][0], days_in_month[3][1])
 
 # TODO 7.10 Tuples
 print("=" * 10, "Section 7.10 tuples", "=" * 10)
 # Create a tuple using the months list as its data source
-months_tuple = tuple(days_in_month)
+months_tuple = tuple(months)
+print(months_tuple)
