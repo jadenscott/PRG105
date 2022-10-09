@@ -19,7 +19,7 @@ for char in name:
 print(name[24])
 
 # 3) Use a negative index value to print the letters from the last name "Schmidt" in name
-print(name[-7], name[-6], name[-5], name[-4], name[-3], name[-2], name[-1])
+print(name[-7:])
 
 # TODO 8.2 String slicing
 print("=" * 10, "Section 8.2 string slicing", "=" * 10)
@@ -58,8 +58,7 @@ else:
 
 # 5) Search for "J" in name, replace with "j" (lower case), print the result
 #    Note: You can assign this to a variable first, or just print
-if 'J' in name:
-    print(name.lower())
+print(name.replace('J', 'j'))
 
 # 6) Split the string name into the variable name_list below (replace the ""), print the result
 name_list = name.split()
