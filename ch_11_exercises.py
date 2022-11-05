@@ -16,19 +16,19 @@ print("=" * 10, "Section 11.1 inheritance", "=" * 10)
 # 1) Create the class Dwelling, the __init__ method should accept number_of_rooms, square_feet, floors
 class Dwelling:
     def __init__(self, number_of_rooms, square_feet, floors):
-        self.number_of_rooms = number_of_rooms
-        self.square_feet = square_feet
-        self.floors = floors
+        self.__number_of_rooms = number_of_rooms
+        self.__square_feet = square_feet
+        self.__floors = floors
 
 # 2) Add mutators for all of the data attributes (number_of_rooms, square_feet, floors)
     def set_number_of_rooms(self, number_of_rooms):
-        self.number_of_rooms = number_of_rooms
+        self.__number_of_rooms = number_of_rooms
 
     def set_square_feet(self, square_feet):
-        self.square_feet = square_feet
+        self.__square_feet = square_feet
 
     def set_floors(self, floors):
-        self.floors = floors
+        self.__floors = floors
 
 # 3) Add accessors for all of the data attributes
     def get_number_of_rooms(self):
@@ -75,7 +75,7 @@ def main():
     my_home = SingleFamilyHome(6, 1200, 1, 'single car garage', .25)
 
     # 8) Display the data using the accessor methods
-    print(f'My home contains {my_home.get_number_of_rooms()} rooms, is {my_home.get_square_feet()} square feet in'
+    print(f'My home contains {my_home.get_number_of_rooms()} rooms, is {my_home.get_square_feet()} square feet in '
           f'size, exists on {my_home.get_floors()} floor, has a {my_home.get_garage_type()}, and is on '
           f'{my_home.get_yard_size()} acres of land.')
 
@@ -98,22 +98,20 @@ class Mammal:
         print('I am a ', self.__species)
 
     def make_sound(self):
-        print('Grrrr')
+        print('Grrrrr')
 # 2) Create a Mouse class as a sub-class of the mammal class following the Dog example
 
 
 class Mouse(Mammal):
-
     def __init__(self):
         Mouse.__init__(self, 'Mouse')
 
     def make_sound(self):
-        print('...')
+        print('Squeak!')
 # 3) Create a Sheep class as a sub-class of the mammal class following the Cat Example
 
 
 class Sheep(Mammal):
-
     def __init__(self):
         Sheep.__init__(self, 'Sheep')
 
@@ -128,7 +126,18 @@ def main2():
     my_mouse = Mouse()
     my_sheep = Sheep()
 
+    show_mammal_info(mammal)
+    print()
+    show_mammal_info(my_mouse)
+    print()
+    show_mammal_info(my_sheep)
+    print()
     
+
+def show_mammal_info(creature):
+    creature.show_species()
+    creature.make_sound()
+
 
 if __name__ == '__main__':
     main2()
