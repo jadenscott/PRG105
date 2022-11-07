@@ -104,7 +104,7 @@ class Mammal:
 
 class Mouse(Mammal):
     def __init__(self):
-        Mouse.__init__(self, 'Mouse')
+        Mammal.__init__(self, 'Mouse')
 
     def make_sound(self):
         print('Squeak!')
@@ -113,7 +113,7 @@ class Mouse(Mammal):
 
 class Sheep(Mammal):
     def __init__(self):
-        Sheep.__init__(self, 'Sheep')
+        Mammal.__init__(self, 'Sheep')
 
     def make_sound(self):
         print('Baaaah!')
