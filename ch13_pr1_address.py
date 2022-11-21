@@ -39,7 +39,7 @@ class MyGUI:
 
         # pack the frames
         self.info_frame.pack()
-        self.quit_button.pack()
+        self.button_frame.pack()
 
         # enters tkinter main loop
         tkinter.mainloop()
