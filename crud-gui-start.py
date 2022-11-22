@@ -72,8 +72,10 @@ class CrudGUI:
             _ = LookGUI(self.master)
         elif self.radio_var.get() == 2:
             _ = AddGUI(self.master)
+        elif self.radio_var.get() == 3:
+            _ = ChangeGUI(self.master)
         else:
-            tkinter.messagebox.showinfo('Function', 'still under construction')
+            _ = DeleteGUI(self.master)
 
 
 # This example class processes the first user choice -- to look for a name (the Read option)
@@ -82,7 +84,7 @@ class LookGUI:
 
         # open the file, load to customers, close file. Do this in each class
         try:
-            input_file = open("customer_file.dat", 'rb')
+            input_file = open('customer_file.dat', 'rb')
             self.customers = pickle.load(input_file)
             input_file.close()
         except (FileNotFoundError, IOError):
@@ -148,10 +150,9 @@ class LookGUI:
 #  -- similar to the logic used in your Name and Email Address program
 # TODO: Remember to pickle your data file after each change to the dictionary
 
-# This class processes the second user choice -- to add a name (the Create option)
+# This class processes the second user choice -- to add a name and email address (the Create option)
 class AddGUI:
     def __init__(self, master):
-
         # open the file, load to customers, close file
         try:
             input_file = open("customer_file.dat", 'rb')
@@ -172,12 +173,12 @@ class AddGUI:
         self.bottom_frame = tkinter.Frame(self.add)
 
         # widgets for top frame - label and entry box for name
-        self.name_label = tkinter.Label(self.top_frame, text='Enter customer name:')
+        self.name_label = tkinter.Label(self.top_frame, text='Enter customer name: ')
         # Entry box uses its own font settings, so tell it to use the TkDefaultFont we set for the primary window
         self.name_entry = tkinter.Entry(self.top_frame, width=15, font="TkDefaultFont")
 
         # widgets for middle1 frame - label and entry for email
-        self.email_label = tkinter.Label(self.middle1_frame, text='Enter customer email:')
+        self.email_label = tkinter.Label(self.middle1_frame, text='Enter customer email: ')
         self.email_entry = tkinter.Entry(self.middle1_frame, width=15, font="TkDefaultFont")
 
         # pack top frame
@@ -188,7 +189,7 @@ class AddGUI:
         self.email_label.pack(side='left')
         self.email_entry.pack(side='left')
 
-        # middle frame - label for results
+        # middle2 frame - label for results
         self.info_string = tkinter.StringVar()
         self.info = tkinter.Label(self.middle2_frame, text='Results: ')
         self.result_label = tkinter.Label(self.middle2_frame, textvariable=self.info_string)
@@ -198,10 +199,10 @@ class AddGUI:
         self.result_label.pack(side='left')
 
         # buttons for bottom frame
-        self.add_button = tkinter.Button(self.bottom_frame, text='Add', command=self.add, width=10)
+        self.add_button = tkinter.Button(self.bottom_frame, text='Add', command=self.add_customer, width=10)
         self.back_button = tkinter.Button(self.bottom_frame, text='Main Menu', command=self.go_back, width=10)
 
-        # pack bottom frame
+        # pack buttons
         self.add_button.pack(side='left')
         self.back_button.pack(side='left')
 
@@ -211,8 +212,8 @@ class AddGUI:
         self.middle2_frame.pack()
         self.bottom_frame.pack()
 
-    # this method is called by the Search button
-    def add(self):
+    # this method is called by the Add button
+    def add_customer(self):
         # get the data from the entry box
         name = self.name_entry.get()
         email = self.email_entry.get()
@@ -226,11 +227,170 @@ class AddGUI:
         except IOError:
             print('Error: unable to save file')
         # display the result in the info label by setting its associated StringVar
-        self.info_string.set(email)
+        self.info_string.set(f'Success! ({email})')
 
     # this method is called by the Main Menu button to destroy the current window and return to the primary
     def go_back(self):
         self.add.destroy()
+
+
+# This class processes the third user choice - to change an email address (the Update option)
+class ChangeGUI:
+    def __init__(self, master):
+        # open the file, load to customers, close file
+        try:
+            input_file = open('customer_file.dat', 'rb')
+            self.customers = pickle.load(input_file)
+            input_file.close()
+        except (FileNotFoundError, IOError):
+            self.customers = {}
+
+        # tkinter.Toplevel() is like tkinter.Frame() but it opens in a new window
+        # when the Toplevel window is closed, it returns focus to the master window
+        self.change = tkinter.Toplevel(master)
+        self.change.title('Change customer email')
+
+        # create Frames for this Toplevel window
+        self.top_frame = tkinter.Frame(self.change)
+        self.middle1_frame = tkinter.Frame(self.change)
+        self.middle2_frame = tkinter.Frame(self.change)
+        self.bottom_frame = tkinter.Frame(self.change)
+
+        # widgets for top frame - label and entry box for name
+        self.name_label = tkinter.Label(self.top_frame, text='Enter existing customer name: ')
+        # Entry box uses its own font settings, so tell it to use the TkDefaultFont we set for the primary window
+        self.name_entry = tkinter.Entry(self.top_frame, width=15, font="TkDefaultFont")
+
+        # widgets for middle1 frame - label and entry for email
+        self.email_label = tkinter.Label(self.middle1_frame, text='Enter new customer email: ')
+        self.email_entry = tkinter.Entry(self.middle1_frame, width=15, font="TkDefaultFont")
+
+        # pack top frame
+        self.name_label.pack(side='left')
+        self.name_entry.pack(side='left')
+
+        # pack middle1 frame
+        self.email_label.pack(side='left')
+        self.email_entry.pack(side='left')
+
+        # middle2 frame - label for results
+        self.info_string = tkinter.StringVar()
+        self.info = tkinter.Label(self.middle2_frame, text='Results: ')
+        self.result_label = tkinter.Label(self.middle2_frame, textvariable=self.info_string)
+
+        # pack middle2 frame
+        self.info.pack(side='left')
+        self.result_label.pack(side='left')
+
+        # buttons for bottom frame
+        self.add_button = tkinter.Button(self.bottom_frame, text='Add', command=self.change_customer, width=10)
+        self.back_button = tkinter.Button(self.bottom_frame, text='Main Menu', command=self.go_back, width=10)
+
+        # pack buttons
+        self.add_button.pack(side='left')
+        self.back_button.pack(side='left')
+
+        # pack frames into the Toplevel window
+        self.top_frame.pack()
+        self.middle1_frame.pack()
+        self.middle2_frame.pack()
+        self.bottom_frame.pack()
+
+    # this method is called by the Search button
+    def change_customer(self):
+        # get the data from the entry box
+        name = self.name_entry.get()
+
+        if name in self.customers:
+            email = self.email_entry.get()
+            # adds key-value pair to dictionary
+            self.customers[name] = email
+            # display the result in the info label by setting its associated StringVar
+            self.info_string.set(f'Success! New email: {email}')
+        else:
+            self.info_string.set('Name not found. Try adding a new entry.')
+
+        # to save the changes made to customer_file
+        try:
+            input_file = open('customer_file.dat', 'wb')
+            pickle.dump(self.customers, input_file)
+            input_file.close()
+        except IOError:
+            print('Error: unable to save file')
+
+    # this method is called by the Main Menu button to destroy the current window and return to the primary
+    def go_back(self):
+        self.change.destroy()
+
+
+# This class processes the last user choice -- to delete a name and email (the Delete option)
+class DeleteGUI:
+    def __init__(self, master):
+        # open the file, load to customers, close file
+        try:
+            input_file = open('customer_file.dat', 'rb')
+            self.customers = pickle.load(input_file)
+            input_file.close()
+        except (FileNotFoundError, IOError):
+            self.customers = {}
+
+        # tkinter.Toplevel() is like tkinter.Frame() but it opens in a new window
+        # when the Toplevel window is closed, it returns focus to the master window
+        self.delete = tkinter.Toplevel(master)
+        self.delete.title('Delete customer')
+
+        # create Frames for this Toplevel window
+        self.top_frame = tkinter.Frame(self.delete)
+        self.middle_frame = tkinter.Frame(self.delete)
+        self.bottom_frame = tkinter.Frame(self.delete)
+
+        # widgets for top frame - label and entry box for name
+        self.name_label = tkinter.Label(self.top_frame, text='Enter customer name to delete: ')
+        # Entry box uses its own font settings, so tell it to use the TkDefaultFont we set for the primary window
+        self.name_entry = tkinter.Entry(self.top_frame, width=15, font="TkDefaultFont")
+
+        # pack top frame
+        self.name_label.pack(side='left')
+        self.name_entry.pack(side='left')
+
+        # middle frame - label for results
+        self.info_string = tkinter.StringVar()
+        self.info = tkinter.Label(self.middle_frame, text='Results: ')
+        self.result_label = tkinter.Label(self.middle_frame, textvariable=self.info_string)
+
+        # pack Middle frame
+        self.info.pack(side='left')
+        self.result_label.pack(side='left')
+
+        # buttons for bottom frame
+        self.delete_button = tkinter.Button(self.bottom_frame, text='Delete', command=self.delete_customer, width=10)
+        self.back_button = tkinter.Button(self.bottom_frame, text='Main Menu', command=self.go_back, width=10)
+
+        # pack buttons
+        self.delete_button.pack(side='left')
+        self.back_button.pack(side='left')
+
+        # pack frames into the Toplevel window
+        self.top_frame.pack()
+        self.middle_frame.pack()
+        self.bottom_frame.pack()
+
+    # this method is called by the Delete button
+    def delete_customer(self):
+        # get the data from the entry box
+        name = self.name_entry.get()
+        # look for the name in the dictionary
+        if name in self.customers:
+            # delete customer's email
+            del self.customers[name]
+            # display the result in the info label by setting its associated StringVar
+            self.info_string.set(f'Success! {name} has been deleted.')
+        else:
+            self.info_string.set('Name not found!')
+
+    # this method is called by the Main Menu button to destroy the current window and return to the primary
+    def go_back(self):
+        self.delete.destroy()
 
 
 def main():
@@ -244,4 +404,5 @@ def main():
     root.mainloop()
 
 
-main()
+if __name__ == '__main__':
+    main()
