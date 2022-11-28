@@ -385,6 +385,13 @@ class DeleteGUI:
             del self.customers[name]
             # display the result in the info label by setting its associated StringVar
             self.info_string.set(f'Success! {name} has been deleted.')
+            # to save the changes made to customer_file
+            try:
+                input_file = open('customer_file.dat', 'wb')
+                pickle.dump(self.customers, input_file)
+                input_file.close()
+            except IOError:
+                print('Error: unable to save file')
         else:
             self.info_string.set('Name not found!')
 
