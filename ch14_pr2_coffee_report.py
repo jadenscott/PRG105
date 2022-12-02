@@ -12,92 +12,36 @@ def main():
         # Create cursor
         cur = conn.cursor()
 
+        # Select all data in the Category field in the Coffee table
+        cur.execute('SELECT Category FROM Coffee')
+
+        # Add data all from Category field to a list
+        category_list = cur.fetchall()
+
+        # Make a list that stores each unique category
+        unique_categories = []
+        for item in category_list:
+            if item[0] not in unique_categories:
+                unique_categories.append(item[0])
+
+        # Displays a header for the report
         print(f'Category         Product            Supplier\n'
               f'========= ===================== ===============')
 
-        """
-        COFFEE CATEGORY
-        """
-        # Selects the Category field, fetches the Coffee category and prints it
-        cur.execute('''SELECT Category FROM Coffee'
-                    '   WHERE Category == "Coffee"''')
-        category = cur.fetchone()
-        print(f'{category[0]}')
+        # Sorts unique categories alphabetically
+        unique_categories.sort()
 
-        # Selects and fetches all records in the coffee category
-        # Orders products alphabetically
-        cur.execute('''SELECT * FROM Coffee
-                        WHERE Category == "Coffee"
-                        ORDER BY Product''')
-        coffee = cur.fetchall()
+        for category in unique_categories:
+            # Prints the category once
+            print(category)
 
-        # Prints out each product and supplier in a formatted manner
-        for record in coffee:
-            print(f'          {record[1]:22}{record[3]}')
+            # Selects and fetches all records in each category
+            cur.execute('SELECT * FROM Coffee WHERE Category == ? ORDER BY Product', (category,))
+            product_list = cur.fetchall()
 
-        """
-        CONDIMENTS CATEGORY
-        """
-        cur.execute('''SELECT Category FROM Coffee'
-                    '   WHERE Category == "Condiments"''')
-        category = cur.fetchone()
-        print(f'{category[0]}')
-
-        cur.execute('''SELECT * FROM Coffee
-                        WHERE Category == "Condiments"
-                        ORDER BY Product''')
-        condiments = cur.fetchall()
-
-        for record in condiments:
-            print(f'          {record[1]:22}{record[3]}')
-
-        """
-        DAIRY CATEGORY
-        """
-        cur.execute('''SELECT Category FROM Coffee'
-                    '   WHERE Category == "Dairy"''')
-        category = cur.fetchone()
-        print(f'{category[0]}')
-
-        cur.execute('''SELECT * FROM Coffee
-                        WHERE Category == "Dairy"
-                        ORDER BY Product''')
-        dairy = cur.fetchall()
-
-        for record in dairy:
-            print(f'          {record[1]:22}{record[3]}')
-
-        """
-        PAPER CATEGORY
-        """
-        cur.execute('''SELECT Category FROM Coffee'
-                    '   WHERE Category == "Paper"''')
-        category = cur.fetchone()
-        print(f'{category[0]}')
-
-        cur.execute('''SELECT * FROM Coffee
-                        WHERE Category == "Paper"
-                        ORDER BY Product''')
-        paper = cur.fetchall()
-
-        for record in paper:
-            print(f'          {record[1]:22}{record[3]}')
-
-        """
-        TEA CATEGORY
-        """
-        cur.execute('''SELECT Category FROM Coffee'
-                    '   WHERE Category == "Tea"''')
-        category = cur.fetchone()
-        print(f'{category[0]}')
-
-        cur.execute('''SELECT * FROM Coffee
-                        WHERE Category == "Tea"
-                        ORDER BY Product''')
-        tea = cur.fetchall()
-
-        for record in tea:
-            print(f'          {record[1]:22}{record[3]}')
+            # Displays each record in a formatted manner
+            for product in product_list:
+                print(f'          {product[1]:20}  {product[3]}')
 
         # Commits changes and closes database connection
         conn.commit()
