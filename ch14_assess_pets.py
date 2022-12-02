@@ -32,20 +32,22 @@ def main():
             in_tuple2 = tuple(line.strip().split(','))
             cur.execute('''INSERT INTO Pets (PetName, PetType, PetBreed, OwnerID) VALUES (?, ?, ?, ?)''', in_tuple2)
 
-        cur.execute('SELECT OwnerName FROM Owners')
+        # Nested for loops select, fetch and display each owner's information followed by their pets' information
+        cur.execute('SELECT OwnerID, OwnerName, OwnerPhone FROM Owners')
         owners = cur.fetchall()
-        owners_list = []
-        for item in owners:
-            owners_list.append(item[0])
-        print(owners_list)
+        for ownerID, name, phone in owners:
+            print(f'{name}   {phone}')
+            cur.execute('SELECT PetName, PetType, PetBreed FROM Pets '
+                        'WHERE OwnerID == ?', (ownerID,))
+            pets = cur.fetchall()
+            for pet_name, pet_type, breed in pets:
+                print(f'       {pet_name} is a {breed} {pet_type}.')
 
-        # for owner in owners_list:
-            # print(f'{owner[0]}   {owner[1]}')
-        
         # Commits changes and closes database connection
         conn.commit()
         conn.close()
 
+    # Catches any file IO or sqlite3 errors and prints default error
     except IOError as err:
         print(f'%File IO error encountered: {err}')
     except sqlite3.Error as err:
