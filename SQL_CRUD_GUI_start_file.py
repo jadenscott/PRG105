@@ -112,8 +112,8 @@ class CrudGUI:
             _ = AddGUI(self.master)
         elif self.radio_var.get() == 3:
             _ = ChangeGUI(self.master)
-        # elif self.radio_var.get() == 4:
-        #     _ = DeleteGUI(self.master)
+        elif self.radio_var.get() == 4:
+            _ = DeleteGUI(self.master)
         else:
             print("Program Error -- menu choice out of range.")
 
@@ -219,13 +219,13 @@ class AddGUI:
         #        first name, last name, phone, email
         # TODO place each label and entry box into the corresponding frame (defined above)
         # TODO set appropriate widths for the entry boxes
-        self.first_name_label = tkinter.Label(self.first_name_frame, text='First name:')
+        self.first_name_label = tkinter.Label(self.first_name_frame, text='First name: ')
         self.first_name_entry = tkinter.Entry(self.first_name_frame, width=15, font='TkDefaultFont')
-        self.last_name_label = tkinter.Label(self.last_name_frame, text='Last name:')
+        self.last_name_label = tkinter.Label(self.last_name_frame, text='Last name: ')
         self.last_name_entry = tkinter.Entry(self.last_name_frame, width=15, font='TkDefaultFont')
-        self.phone_label = tkinter.Label(self.phone_frame, text='Phone number:')
+        self.phone_label = tkinter.Label(self.phone_frame, text='Phone number: ')
         self.phone_entry = tkinter.Entry(self.phone_frame, width=30, font='TkDefaultFont')
-        self.email_label = tkinter.Label(self.email_frame, text='Email:')
+        self.email_label = tkinter.Label(self.email_frame, text='Email: ')
         self.email_entry = tkinter.Entry(self.email_frame, width=30, font='TkDefaultFont')
 
         # pack data widgets into their frames
@@ -421,12 +421,13 @@ class ChangeGUI:
         # use data to locate and update matching database record
         customer_db = None
         try:
-            # TODO connect to the database and UPDATE the Customer table with the data entered
+            # TODO connect to the database and UPDATE the Customer table with the data entered *DONE*
             # TODO Use a WHERE clause to locate the record to update using the CustomerID
             customer_db = sqlite3.connect('customers.db')
-            cur = customer_db.cursor
+            cur = customer_db.cursor()
             cur.execute('''UPDATE Customers SET FirstName == ?, LastName == ?, Phone == ?, Email == ? 
                         WHERE CustomerID == ?''', (first_name, last_name, phone, email, customer_id))
+            customer_db.commit()
         except sqlite3.Error as err:
             self.message.set(f"Database error: {err}")
         finally:
@@ -522,7 +523,7 @@ class ChangeGUI:
             self.id_entry.delete(0, tkinter.END)
             self.id_entry.focus_set()
 
-"""
+
 # This class processes the third menu choice -- to delete one or more records in the database (one at a time)
 # Note: Only the Customer_ID is unique in the database, so the user must select the record by their ID
 # Tkinter features are used to enable and disable buttons to focus the user on the steps required for processing
@@ -540,27 +541,45 @@ class DeleteGUI:
         self.button_frame = tkinter.Frame(self.delete)
 
         # locate the customer ID first - similar to the UpdateGUI widgets
-        # TODO add a Label, Entry widget and Button for customer ID into self.id_frame
+        # TODO add a Label, Entry widget and Button for customer ID into self.id_frame *DONE*
         # TODO the Search by ID button should call self.find_customer
+        self.id_label = tkinter.Label(self.id_frame, text="Enter customer ID: ")
+        self.id_entry = tkinter.Entry(self.id_frame, width=10, font="TkDefaultFont")
+        self.find_button = tkinter.Button(self.id_frame, text='Search by ID', command=self.find_customer)
 
         # pack data widgets into their frames
-        # TODO pack the widgets you just created
+        # TODO pack the widgets you just created *DONE*
+        self.id_label.pack(side='left')
+        self.id_entry.pack(side='left')
+        self.find_button.pack()
 
         # middle frame - label for results
-        # TODO create self.message as a StringVar()
+        # TODO create self.message as a StringVar() *DONE*
         # TODO create a Label in self.result_frame with width 45 to display the contents of self.message
+        self.message = tkinter.StringVar()
+        self.result_label = tkinter.Label(self.result_frame, textvariable=self.message, width=45)
 
         # pack results into frame
-        # TODO pack the label
+        # TODO pack the label *DONE*
+        self.result_label.pack(side='left')
 
         # buttons for button frame
-        # TODO create three buttons in self.button_frame
+        # TODO create three buttons in self.button_frame *DONE*
         # TODO the Delete button should call self.remove and have state=DISABLED
         # TODO the Cancel button should call self.cancel_removal and have state=DISABLED
         # TODO the Main Menu button should close the window and return to the master window
+        self.delete_button = tkinter.Button(self.button_frame, text='Delete',
+                                            command=self.remove, state=tkinter.DISABLED)
+        self.cancel_button = tkinter.Button(self.button_frame, text='Cancel',
+                                            command=self.cancel_removal, state=tkinter.DISABLED)
+        self.main_menu_button = tkinter.Button(self.button_frame, text='Main Menu',
+                                               command=self.delete.destroy)
 
         # pack button frame
-        # TODO pack the buttons
+        # TODO pack the buttons *DONE*
+        self.delete_button.pack(side='left')
+        self.cancel_button.pack(side='left')
+        self.main_menu_button.pack(side='left')
 
         # pack frames
         self.id_frame.pack()
@@ -572,12 +591,17 @@ class DeleteGUI:
     # Delete button should not be ACTIVE unless a valid ID has been located and displayed
     def remove(self):
         # get the customer_ID that has been selected, then remove the corresponding record from the database
-        # TODO get the value from the Customer ID entry widget and strip off whitespace
+        # TODO get the value from the Customer ID entry widget and strip off whitespace *DONE*
         # TODO      (You will use the value in your WHERE clause below)
+        customer_id = self.id_entry.get().strip()
         customer_db = None
         try:
-            # TODO connect to the database and DELETE FROM the Customer table
+            # TODO connect to the database and DELETE FROM the Customer table *DONE*
             # TODO Use a WHERE clause to locate the correct record to DELETE using the CustomerID
+            customer_db = sqlite3.connect('customers.db')
+            cur = customer_db.cursor()
+            cur.execute('DELETE FROM Customers WHERE CustomerID == ?', (customer_id,))
+            customer_db.commit()
         except sqlite3.Error as err:
             self.message.set(f"Database error: {err}")
         finally:
@@ -597,7 +621,7 @@ class DeleteGUI:
 
     # reset entry boxes and button states to put the focus back on selecting a new ID for potential removal
     def swap_status(self):
-        # TODO ---------------------------------------------------------------------------------
+        # TODO --------------------------------------------------------------------------------- *DONE*
         # TODO NOTE: The order of the following steps must be followed
         # TODO       because you cannot modify the contents of an entry widget that is disabled
         # TODO ---------------------------------------------------------------------------------
@@ -606,27 +630,41 @@ class DeleteGUI:
         # TODO 3. enable the Customer ID entry widget by setting the state to: tkinter.NORMAL
         # TODO 4. clear the data from the Customer ID entry widget
         # TODO 5. set focus to the Customer ID entry widget
+        self.delete_button['status'] = tkinter.DISABLED
+        self.cancel_button['status'] = tkinter.DISABLED
+        self.find_button['status'] = tkinter.ACTIVE
+        self.id_entry['status'] = tkinter.NORMAL
+        self.id_entry.delete(0, tkinter.END)
+        self.id_entry.focus_set()
 
     # This method is called when the Search by ID button is pressed
     def find_customer(self):
         # get the data from the entry box
-        # TODO get the value from the Customer ID entry widget and store it in a variable called id_number
+        # TODO get the value from the Customer ID entry widget and store it in a variable called id_number *DONE*
+        id_number = self.id_entry.get().strip()
         # look for the name in the dictionary
         result = find_customer_by_id(id_number)
         # there should be at most one record matching the ID (or None)
-        # TODO create an if statement that tests to make sure there is only one record in the list result
+        # TODO create an if statement that tests to make sure there is only one record in the list result *DONE*
+        if len(result) == 1:
             # if one record is found, display all data (including ID) so that user can confirm
-            # TODO get the individual values out of the record (tuple)
+            # TODO get the individual values out of the record (tuple) *DONE*
             # TODO    and display them in a string using the message widget
+            self.message.set(f'{result[0][1]} {result[0][2]} {result[0][3]} {result[0][4]}')
             # enable button choices to Delete or Cancel
-            # TODO change the Delete and Cancel buttons to have a state of tkinter.ACTIVE
+            # TODO change the Delete and Cancel buttons to have a state of tkinter.ACTIVE *DONE*
+            self.delete_button['status'] = tkinter.ACTIVE
+            self.cancel_button['status'] = tkinter.ACTIVE
             # -- disable id section until this record is processed, but do not erase ID until processed
-            # TODO change the states of the Customer ID entry widget and Search by ID button to tkinter.DISABLED
+            # TODO change the states of the Customer ID entry widget and Search by ID button to tkinter.DISABLED *DONE*
+            self.id_entry['status'] = tkinter.DISABLED
+            self.find_button['status'] = tkinter.DISABLED
         else:
             # if no matching ID is found, reset for another try
-            # TODO clear the data from the Customer ID entry widget
+            # TODO clear the data from the Customer ID entry widget *DONE*
             self.message.set("Customer ID not found.")
-"""
+            self.id_entry.delete(0, tkinter.END)
+
 
 # The find_customer_by_name method returns all records that match the name
 # The parameter first_name is a Boolean.
@@ -637,7 +675,7 @@ def find_customer_by_name(name, first_name):
     results = []
     pattern_to_match = f"%{name.lower()}%"
     try:
-        # TODO:
+        # TODO: *DONE*
         #  1. establish a connection to the database
         #  2. SELECT all fields from Customers that match the name to FirstName or LastName depending on first_name
         #  3. fetch the resulting data into the list named results
