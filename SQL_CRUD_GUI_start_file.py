@@ -630,10 +630,10 @@ class DeleteGUI:
         # TODO 3. enable the Customer ID entry widget by setting the state to: tkinter.NORMAL
         # TODO 4. clear the data from the Customer ID entry widget
         # TODO 5. set focus to the Customer ID entry widget
-        self.delete_button['status'] = tkinter.DISABLED
-        self.cancel_button['status'] = tkinter.DISABLED
-        self.find_button['status'] = tkinter.ACTIVE
-        self.id_entry['status'] = tkinter.NORMAL
+        self.delete_button['state'] = tkinter.DISABLED
+        self.cancel_button['state'] = tkinter.DISABLED
+        self.find_button['state'] = tkinter.ACTIVE
+        self.id_entry['state'] = tkinter.NORMAL
         self.id_entry.delete(0, tkinter.END)
         self.id_entry.focus_set()
 
@@ -653,12 +653,12 @@ class DeleteGUI:
             self.message.set(f'{result[0][1]} {result[0][2]} {result[0][3]} {result[0][4]}')
             # enable button choices to Delete or Cancel
             # TODO change the Delete and Cancel buttons to have a state of tkinter.ACTIVE *DONE*
-            self.delete_button['status'] = tkinter.ACTIVE
-            self.cancel_button['status'] = tkinter.ACTIVE
+            self.delete_button['state'] = tkinter.ACTIVE
+            self.cancel_button['state'] = tkinter.ACTIVE
             # -- disable id section until this record is processed, but do not erase ID until processed
             # TODO change the states of the Customer ID entry widget and Search by ID button to tkinter.DISABLED *DONE*
-            self.id_entry['status'] = tkinter.DISABLED
-            self.find_button['status'] = tkinter.DISABLED
+            self.id_entry['state'] = tkinter.DISABLED
+            self.find_button['state'] = tkinter.DISABLED
         else:
             # if no matching ID is found, reset for another try
             # TODO clear the data from the Customer ID entry widget *DONE*
